@@ -1,8 +1,11 @@
+from Stop import Stop
+
+
 class Graph:
 
-    def __init__(self, name, stops):
-        self.name = name
-        self.stops = stops
+    def __init__(self, buses):
+        self.buses = buses #list of bus
+        self.stops = []
 
     def shortest(self, start_stop, end_stop):
         pass
@@ -12,3 +15,4 @@ class Graph:
 
     def foremost(self, start_stop, end_stop):
         pass
+
