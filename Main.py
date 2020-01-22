@@ -36,7 +36,9 @@ def main():
     bus_1 = Bus_line(bus_1_name)
     bus_1.init_stop_regular(init_network(data_file_name)["regular"][1], init_network(data_file_name)["regular"][2])
 
-    for stop in bus_1.stops_regular:
+    bus_1.init_stop_holidays(init_network(data_file_name)["holidays"][1], init_network(data_file_name)["holidays"][2])
+
+    for stop in bus_1.regular_stops:
         print(stop.name,"\n schedule_go : ", stop.schedule_go , "\n schedule_back :", stop.schedule_back)
 
 if __name__ == "__main__":
