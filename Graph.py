@@ -73,41 +73,37 @@ class Graph:  # composed of bus lines
 
         # add neighbour bus_stop for each bus_stop on regular_date (the regular and we_holidays paths might be
         # differents)
-        split_regular_path = regular_path.split(" ")  # we create a split list from a string
-        for bus_stop_name in split_regular_path:
-            if bus_stop_name != "+" and bus_stop_name != "N":
-                i = split_regular_path.index(bus_stop_name)
-                while i < (len(split_regular_path) - 1) and split_regular_path[i] != "N":
-                    i = i + 1
-                if i <= len(split_regular_path) - 2:
-                    bus_stop1 = self.get_bus_stop(bus_stop_name)
-                    bus_stop2 = self.get_bus_stop(split_regular_path[i + 1])
-                    if bus_stop2 not in bus_stop1.neighbour_bus_stop:  # to avoid duplication
-                        bus_stop1.add_neighbour_bus_stop(bus_stop2)
-                    if bus_stop1 not in bus_stop2.neighbour_bus_stop:
-                        bus_stop2.add_neighbour_bus_stop(bus_stop1)
+        self.add_neighbour_bus_stops(regular_path)
 
         # add neighbour bus_stop for each bus_stop on we_holidays_date (the regular and we_holidays paths might be
         # differents)
-        split_we_holidays_path = we_holidays_path.split(" ")  # we create a split list from a string
-        for bus_stop_name in split_we_holidays_path:
+        self.add_neighbour_bus_stops(we_holidays_path)
+
+    def get_bus_stop(self, bus_stop_name):
+        """ return the bus_stop named bus_stop_name"""
+        for bus_stop in self.bus_stops:
+            if bus_stop.name == bus_stop_name:
+                return bus_stop
+
+    def add_neighbour_bus_stops(self, path):
+        """ add the neighbour bus stops to each each bus stop on the path (create the path)
+        :param path: string """
+
+        split_path = path.split(" ")  # we create a split list from a string
+        for bus_stop_name in split_path:
             if bus_stop_name != "+" and bus_stop_name != "N":
-                i = split_regular_path.index(bus_stop_name)
-                while i < (len(split_we_holidays_path) - 1) and split_we_holidays_path[i] != "N":
+                i = split_path.index(bus_stop_name)
+                while i < (len(split_path) - 1) and split_path[i] != "N":
                     i = i + 1
-                if i <= len(split_we_holidays_path) - 2:
+                if i <= len(split_path) - 2:
                     bus_stop1 = self.get_bus_stop(bus_stop_name)
-                    bus_stop2 = self.get_bus_stop(split_we_holidays_path[i + 1])
+                    bus_stop2 = self.get_bus_stop(split_path[i + 1])
                     if bus_stop2 not in bus_stop1.neighbour_bus_stop:  # to avoid duplication
                         bus_stop1.add_neighbour_bus_stop(bus_stop2)
                     if bus_stop1 not in bus_stop2.neighbour_bus_stop:
                         bus_stop2.add_neighbour_bus_stop(bus_stop1)
 
-    def get_bus_stop(self, bus_stop_name):
-        """ return the bus_stop which has bus_stop_name"""
-        for bus_stop in self.bus_stops:
-            if bus_stop.name == bus_stop_name:
-                return bus_stop
+
 
     def shortest(self, start_stop, end_stop):
         pass
