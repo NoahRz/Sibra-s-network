@@ -104,6 +104,9 @@ class Graph:  # composed of bus lines
                         bus_stop2.add_neighbour_bus_stop(bus_stop1)
 
 
+    def find_path(self, bus_stop_start, bus_stop_end, departure_time):
+        """ return the first path found from """
+        pass
 
     def shortest(self, start_stop, end_stop):
         pass
