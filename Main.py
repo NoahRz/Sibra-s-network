@@ -19,7 +19,7 @@ def main():
 
     for bus_stop in graph.bus_stops:
         l = []
-        for b in bus_stop.neighbour_stop:
+        for b in bus_stop.neighbour_bus_stop:
             l.append(b.name)
         print(bus_stop.name, l)
 
