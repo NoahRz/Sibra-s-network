@@ -42,36 +42,36 @@ class Graph:  # composed of bus lines
         # NB: a Bus stop can be served on regular and/or on we_holidays date
 
         # regular_date
-        for stop_name in regular_date_go:
-            stops_name = [] # current list of stop names
-            for stop1 in self.stops:
-                stops_name.append(stop1.name)
+        for bus_stop_name in regular_date_go:
+            bus_stop_names = [] # current list of stop names
+            for bus_stop1 in self.stops:
+                bus_stop_names.append(bus_stop1.name)
 
-            if not (stop_name in stops_name):  # creates the new bus stop and adds the schedule of the bus line to
+            if not (bus_stop_name in bus_stop_names):  # creates the new bus stop and adds the schedule of the bus line to
                 # the stop
-                st = Stop(stop_name)
+                st = Stop(bus_stop_name)
                 st.add_bus_line_regular(bus_line_name, regular_date_go, regular_date_back)
                 self.stops.append(st)
             else:  # adds the new bus line if the bus stop is already in the network
-                for stop2 in self.stops: # search the stop in the list self.stops
-                    if stop2.name == stop_name:
-                        stop2.add_bus_line_regular(bus_line_name, regular_date_go, regular_date_back)
+                for bus_stop2 in self.stops: # search the stop in the list self.stops
+                    if bus_stop2.name == bus_stop_name:
+                        bus_stop2.add_bus_line_regular(bus_line_name, regular_date_go, regular_date_back)
 
         # we_holidays_date
-        for stop_name in we_holidays_date_go:  # in case that the lists of bus stop are not the same in regular and
-            stops_name = []
-            for stop1 in self.stops:
-                stops_name.append(stop1.name)
+        for bus_stop_name in we_holidays_date_go:  # in case that the lists of bus stop are not the same in regular and
+            bus_stop_names = []
+            for bus_stop1 in self.stops:
+                bus_stop_names.append(bus_stop1.name)
 
-            if not (stop_name in stops_name):  # creates the new bus stop and adds the schedule of the bus line to
+            if not (bus_stop_name in bus_stop_names):  # creates the new bus stop and adds the schedule of the bus line to
                 # the stop
-                st = Stop(stop_name)
+                st = Stop(bus_stop_name)
                 st.add_bus_line_we_holidays(bus_line_name, we_holidays_date_go, we_holidays_date_back)
                 self.stops.append(st)
             else:  # adds the new bus line if the bus stop is already in the network
-                for stop2 in self.stops:
-                    if stop2.name == stop_name:
-                        stop2.add_bus_line_we_holidays(bus_line_name,  we_holidays_date_go, we_holidays_date_back)
+                for bus_stop2 in self.stops:
+                    if bus_stop2.name == bus_stop_name:
+                        bus_stop2.add_bus_line_we_holidays(bus_line_name,  we_holidays_date_go, we_holidays_date_back)
 
     def shortest(self, start_stop, end_stop):
         pass
