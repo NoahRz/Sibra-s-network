@@ -17,9 +17,15 @@ def main():
     graph.add_bus_line(data_file_name1)
     graph.add_bus_line(data_file_name2)
 
-    for stop in graph.stops:
+    for bus_stop in graph.bus_stops:
+        l = []
+        for b in bus_stop.neighbour_stop:
+            l.append(b.name)
+        print(bus_stop.name, l)
+
+    for stop in graph.bus_stops:
         print(stop.name, stop.schedules)
-    print(len(graph.stops))
+    print(len(graph.bus_stops))
 
 if __name__ == "__main__":
     main()
