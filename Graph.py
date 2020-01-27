@@ -48,16 +48,17 @@ class Graph:  # composed of bus lines
             for bus_stop1 in self.bus_stops:
                 bus_stop_names.append(bus_stop1.name)
 
-            if not (
-                    bus_stop_name in bus_stop_names):  # creates the new bus stop and adds the schedule of the bus
+            if not (bus_stop_name in bus_stop_names):  # creates the new bus stop and adds the schedule of the bus
                 # line to the stop
                 st = Stop(bus_stop_name)
                 st.add_bus_line_regular(bus_line_name, regular_date_go, regular_date_back)
                 self.bus_stops.append(st)
             else:  # adds the new bus line if the bus stop is already in the network
-                for bus_stop2 in self.bus_stops:  # search the stop in the list self.stops
-                    if bus_stop2.name == bus_stop_name:
-                        bus_stop2.add_bus_line_regular(bus_line_name, regular_date_go, regular_date_back)
+                self.get_bus_stop(bus_stop_name).add_bus_line_regular(bus_line_name, regular_date_go, regular_date_back)
+
+                # for bus_stop2 in self.bus_stops:  # search the stop in the list self.stops
+                #     if bus_stop2.name == bus_stop_name:
+                #         bus_stop2.add_bus_line_regular(bus_line_name, regular_date_go, regular_date_back)
 
         # we_holidays_date
         for bus_stop_name in we_holidays_date_go:  # in case that the lists of bus stop are not the same in regular and
@@ -65,16 +66,17 @@ class Graph:  # composed of bus lines
             for bus_stop1 in self.bus_stops:
                 bus_stop_names.append(bus_stop1.name)
 
-            if not (
-                    bus_stop_name in bus_stop_names):  # creates the new bus stop and adds the schedule of the bus
+            if not (bus_stop_name in bus_stop_names):  # creates the new bus stop and adds the schedule of the bus
                 # line to the stop
                 st = Stop(bus_stop_name)
                 st.add_bus_line_we_holidays(bus_line_name, we_holidays_date_go, we_holidays_date_back)
                 self.bus_stops.append(st)
             else:  # adds the new bus line if the bus stop is already in the network
-                for bus_stop2 in self.bus_stops:  # TO OPTIMIZE
-                    if bus_stop2.name == bus_stop_name:
-                        bus_stop2.add_bus_line_we_holidays(bus_line_name, we_holidays_date_go, we_holidays_date_back)
+                self.get_bus_stop(bus_stop_name).add_bus_line_we_holidays(bus_line_name, we_holidays_date_go, we_holidays_date_back)
+
+                # for bus_stop2 in self.bus_stops:  # TO OPTIMIZE
+                #     if bus_stop2.name == bus_stop_name:
+                #         bus_stop2.add_bus_line_we_holidays(bus_line_name, we_holidays_date_go, we_holidays_date_back)
 
         # add neighbour bus_stop for each bus_stop on regular_date
         splitted_regular_path = regular_path.split(" ")  # we create a split list from a string
