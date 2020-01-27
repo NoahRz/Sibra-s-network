@@ -23,7 +23,8 @@ class Stop:
             self.schedules[bus_line_name] = dict()
 
         self.schedules[bus_line_name]["we_holidays_go"] = we_holidays_date_go[self.name]
-        self.schedules[bus_line_name]["we_holidays_back"] = we_holidays_date_back[self.name],
+        self.schedules[bus_line_name]["we_holidays_back"] = we_holidays_date_back[self.name]
+
 
     def add_neighbour_bus_stop(self, bus_stop):
         """ add the next bus stop"""

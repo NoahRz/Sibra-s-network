@@ -43,7 +43,7 @@ class Graph:  # composed of bus lines
         # NB: a Bus stop can be served on regular and/or on we_holidays date
 
         # we create regular_date bus_stop
-        for bus_stop_name in regular_date_go:
+        for bus_stop_name in regular_date_go: # TO OPTIMISE
             bus_stop_names = []  # current list of stop names
             for bus_stop1 in self.bus_stops:
                 bus_stop_names.append(bus_stop1.name)
@@ -56,7 +56,7 @@ class Graph:  # composed of bus lines
             else:  # adds the new bus line if the bus stop is already in the network
                 self.get_bus_stop(bus_stop_name).add_bus_line_regular(bus_line_name, regular_date_go, regular_date_back)
 
-        # we create we_holidays_date bus_stop
+        # we create we_holidays_date bus_stop # TO OPTIMISE
         for bus_stop_name in we_holidays_date_go:  # in case that the lists of bus stop are not the same in regular and
             bus_stop_names = []
             for bus_stop1 in self.bus_stops:
