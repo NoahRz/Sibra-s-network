@@ -5,8 +5,8 @@ class Stop:
         self.schedules = dict()  # a dict where the keys are bus_line_name and the values are others dicts where the
         # keys regular_go, regular_back and/or we_holidays_go, we_holidays_back and the value are the time for each
         # period
-        self.next_bus_stop = [] #bus stop after self in path go, we create these to know which schedule use (go or back)
-        self.prev_bus_stop = [] #bus stop after self in path back
+        self.next_bus_stop = []  # bus stop after self in path go, we create these to know which schedule use (go or back)
+        self.prev_bus_stop = []  # bus stop after self in path back
 
     def add_bus_line_regular(self, bus_line_name, regular_date_go, regular_date_back):
         """ add the regular schedule of the new bus line"""
@@ -34,7 +34,7 @@ class Stop:
         """ add the previous bus stop"""
         self.prev_bus_stop.append(bus_stop)
 
-    def convert_time_in_min(self, time): # Warning same function in Graph class
+    def convert_time_in_min(self, time):  # Warning same function in Graph class
         """ return the converted time hour:min into min
         :param time: str
         :return int (minunte)"""
@@ -47,6 +47,17 @@ class Stop:
 
         for bus_line_name in self.schedules:
             index = 0
-            while index < len(self.schedules[bus_line_name][date_path][index]) and convert_time_asked_in_min <= self.convert_time_in_min(self.schedules[bus_line_name][date_path][index]):
+            while index < len(self.schedules[bus_line_name][date_path][
+                                  index]) and convert_time_asked_in_min <= self.convert_time_in_min(
+                    self.schedules[bus_line_name][date_path][index]):
                 index = index + 1
-            return {"bus_line_name": bus_line_name, "closest_time": self.schedules[bus_line_name][date_path][index], "index": index}
+            return {"bus_line_name": bus_line_name, "closest_time": self.schedules[bus_line_name][date_path][index],
+                    "index": index}
+
+    def has_prev_bus_stop(self):
+        """return True if this bus stop has prev_bus_stop, else False"""
+        return self.prev_bus_stop != []
+
+    def has_next_bus_stop(self):
+        """return True if this bus stop has next_bus_stop, else False"""
+        return self.next_bus_stop != []

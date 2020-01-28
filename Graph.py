@@ -43,7 +43,7 @@ class Graph:  # composed of bus lines
         # NB: a Bus stop can be served on regular and/or on we_holidays date
 
         # we create regular_date bus_stop
-        for bus_stop_name in regular_date_go:  # TO OPTIMISE
+        for bus_stop_name in regular_date_go:  # TO OPTIMISE $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
             bus_stop_names = []  # current list of stop names
             for bus_stop1 in self.bus_stops:
                 bus_stop_names.append(bus_stop1.name)
@@ -56,7 +56,7 @@ class Graph:  # composed of bus lines
             else:  # adds the new bus line if the bus stop is already in the network
                 self.get_bus_stop(bus_stop_name).add_bus_line_regular(bus_line_name, regular_date_go, regular_date_back)
 
-        # we create we_holidays_date bus_stop # TO OPTIMISE
+        # we create we_holidays_date bus_stop # TO OPTIMISE  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
         for bus_stop_name in we_holidays_date_go:  # in case that the lists of bus stop are not the same in regular and
             bus_stop_names = []
             for bus_stop1 in self.bus_stops:
@@ -70,6 +70,7 @@ class Graph:  # composed of bus lines
             else:  # adds the new bus line if the bus stop is already in the network
                 self.get_bus_stop(bus_stop_name).add_bus_line_we_holidays(bus_line_name, we_holidays_date_go,
                                                                           we_holidays_date_back)
+#$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
         # add neighbour bus_stop for each bus_stop on regular_date (the regular and we_holidays paths might be
         # differents)
@@ -175,37 +176,75 @@ class Graph:  # composed of bus lines
                 #     bus_stop_current = bus_stop_neighbour
         # return path
 
-    def find_path2(self, bus_stop_start, bus_stop_end, time, path=[]):
-
-        if not (bus_stop_start in path):
-            path.append(bus_stop_start)
-            bus_stop_current = bus_stop_start
-            while bus_stop_current != bus_stop_end:
-                neighbours = []
-                neighbours.extend(bus_stop_current.prev_bus_stop)
-                neighbours.extend(bus_stop_current.next_bus_stop)
-                for bus_stop_neighbour in neighbours:
-                    if not(bus_stop_neighbour in path):
-                        self.find_path(bus_stop_neighbour, bus_stop_end, time, path)
-            return path
-
     def find_path(self,  bus_stop_start, bus_stop_end, time):
-        """ find the path between bus_stop_start and bus_stop_end, direction : go"""
-        path = [bus_stop_start]
-        bus_stop_current = bus_stop_start
-        while bus_stop_current is not bus_stop_end:
-            neighbours = []
-            neighbours.extend(bus_stop_current.next_bus_stop)
-            #neighbours.extend(bus_stop_current.prev_bus_stop)
-            for bus_stop_neighbour in neighbours:
-                if bus_stop_neighbour != None:
-                    path.append(bus_stop_current)
-                    bus_stop_current = bus_stop_neighbour
+        # """ find the path between bus_stop_start and bus_stop_end, direction : go"""
+        # path = [bus_stop_start]
+        # bus_stop_current = bus_stop_start
+        # while bus_stop_current is not bus_stop_end:
+        #     neighbours = []
+        #     neighbours.extend(bus_stop_current.next_bus_stop)
+        #     #neighbours.extend(bus_stop_current.prev_bus_stop)
+        #     for bus_stop_neighbour in neighbours:
+        #         if bus_stop_neighbour != None:
+        #             path.append(bus_stop_current)
+        #             bus_stop_current = bus_stop_neighbour
+        # path.append(bus_stop_current)
+        # return path
+        pass
+
+    def find_path_new(self, bus_stop_star, bus_stop_end, path=[]):
+
+        # if self.on_same_bus_line(bus_stop_star, bus_stop_end): # IT WORKS, TO SHOW ONE DIRECTION IN THE SAME BUS LINE
+        #     bus_stop_current = bus_stop_star
+        #     path.append(bus_stop_current)
+        #     while bus_stop_current != bus_stop_end:
+        #         for bus_stop_neighbour in bus_stop_current.next_bus_stop:
+        #             if not (bus_stop_neighbour in path):
+        #                 return self.find_path_new(bus_stop_neighbour, bus_stop_end, path)
+        #     return path
+
+
+        # bus_stop_current = bus_stop_star
+        # path.append(bus_stop_current)
+        # while bus_stop_current != bus_stop_end:
+        #     if bus_stop_current.has_next_bus_stop(): # do not know if it's useful
+        #         for bus_stop_neighbour in bus_stop_current.next_bus_stop:
+        #             if not (bus_stop_neighbour in path):
+        #                          return self.find_path_new(bus_stop_neighbour, bus_stop_end, path)
+        #     if bus_stop_current.has_prev_bus_stop(): # do not know if it's useful
+        #         for bus_stop_neighbour in bus_stop_current.prev_bus_stop:
+        #             if not (bus_stop_neighbour in path):
+        #             return self.find_path_new(bus_stop_neighbour, bus_stop_end, path)
+        #
+        #     return path
+        # return path
+
+        bus_stop_current = bus_stop_star
         path.append(bus_stop_current)
+        while bus_stop_current != bus_stop_end:
+            if bus_stop_current.has_next_bus_stop():  # do not know if it's useful
+                for bus_stop_neighbour in bus_stop_current.next_bus_stop:
+                    if not (bus_stop_neighbour in path):
+                        return self.find_path_new(bus_stop_neighbour, bus_stop_end, path)
+            if bus_stop_current.has_prev_bus_stop():  # do not know if it's useful
+                for bus_stop_neighbour in bus_stop_current.prev_bus_stop:
+                    # if not (bus_stop_neighbour in path):
+                        return self.find_path_new(bus_stop_neighbour, bus_stop_end, path)
+            return path
         return path
 
-
-
+        # bus_stop_current = bus_stop_star
+        # path.append(bus_stop_current)
+        # while bus_stop_current != bus_stop_end:
+        #     if bus_stop_current.has_next_bus_stop() or bus_stop_current.has_prev_bus_stop() : # do not know if it's useful
+        #         neighbours = []
+        #         neighbours.extend(bus_stop_current.next_bus_stop)
+        #         neighbours.extend(bus_stop_current.prev_bus_stop)
+        #         for bus_stop_neighbour in neighbours:
+        #             if not (bus_stop_neighbour in path):
+        #                          return self.find_path_new(bus_stop_neighbour, bus_stop_end, path)
+        #     return path
+        # return path
 
 
     def convert_time_in_min(self, time):
@@ -214,6 +253,9 @@ class Graph:  # composed of bus lines
         :return int (minunte)"""
         return int(time.split(":")[0]) * 60 + int(time.split(":")[1])
 
+    def test_fastest(self, bus_stops, bus_stop_start, bus_stop_end): # like dijkstra
+        """ return the fatest path from bus_stop_start to bus_stop_end"""
+    
     def shortest(self, start_stop, end_stop):
         pass
 
@@ -221,4 +263,13 @@ class Graph:  # composed of bus lines
         pass
 
     def foremost(self, start_stop, end_stop):
+        pass
+
+    def on_same_bus_line(self, bus_stop1, bus_stop2):
+        """return True if bus_stop1 and bus_stop2 are on the same bus line, else False"""
+        for bus_line_name in bus_stop1.schedules: # if they have one shared bus_line, it has to be in bus_stop1's bus lines (we could do it with bus_stop2)
+            if bus_line_name in bus_stop2.schedules:
+                return True
+        return False
+
         pass

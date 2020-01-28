@@ -69,7 +69,8 @@ def main():
                     date_asked = "regular"
                 else:
                     date_asked = "we_holidays"
-                path = graph.find_path(bus_stop_start, bus_stop_end, time_asked)
+                #path = graph.find_path(bus_stop_start, bus_stop_end, time_asked)
+                path = graph.find_path_new(bus_stop_start, bus_stop_end)
                 path_names = []
                 # path = graph.find_path(bus_stop_start, bus_stop_end, time_asked, date_asked)
                 for bus_stop in path:
