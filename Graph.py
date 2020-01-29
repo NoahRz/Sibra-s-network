@@ -1,3 +1,6 @@
+import datetime
+import math
+
 from Stop import Stop
 
 
@@ -70,7 +73,7 @@ class Graph:  # composed of bus lines
             else:  # adds the new bus line if the bus stop is already in the network
                 self.get_bus_stop(bus_stop_name).add_bus_line_we_holidays(bus_line_name, we_holidays_date_go,
                                                                           we_holidays_date_back)
-#$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
         # add neighbour bus_stop for each bus_stop on regular_date (the regular and we_holidays paths might be
         # differents)
@@ -121,7 +124,7 @@ class Graph:  # composed of bus lines
         # while bus_stop_current != bus_stop_end:
         # for bus_stop in bus_stop_current.neighbour_bus_stop:
 
-        #departure_time = bus_stop_start.get_closest_time(time_asked, date_asked)
+        # departure_time = bus_stop_start.get_closest_time(time_asked, date_asked)
 
         # path = []
         # #path = [{"from_bus_stop_name":bus_stop_start.name, "to_bus_stop_name" : "a", "bus_line_name": departure_time["bus_line_name"], "Departure_time": departure_time["closest_time"]}]
@@ -164,19 +167,19 @@ class Graph:  # composed of bus lines
         #                 path.append(step)
         #                 path.append(self.find_path(bus_stop_neighbour, bus_stop_end,arrival_time, date_asked))
 
-            # for bus_stop_neighbour in bus_stop_current.neighbour_bus_stop:
-            #     closest_time = bus_stop_current.get_closest_time(time_asked, date_asked)
-            #     if bus_stop_neighbour.convert_in_time(bus_stop_neighbour.schedules[closest_time["bus_line_name"]][closest_time["index"]])>closest_time["closest_time"]:
-            #         path.append({"from_bus_stop_name":bus_stop_current.name, "to_bus_stop_name" : bus_stop_neighbour.name, "bus_line_name": closest_time["bus_line_name"], "Departure_time": bus_stop_neighbour.schedules[closest_time["bus_line_name"]][closest_time["index"]]})
-            #         bus_stop_current=bus_stop_neighbour
+        # for bus_stop_neighbour in bus_stop_current.neighbour_bus_stop:
+        #     closest_time = bus_stop_current.get_closest_time(time_asked, date_asked)
+        #     if bus_stop_neighbour.convert_in_time(bus_stop_neighbour.schedules[closest_time["bus_line_name"]][closest_time["index"]])>closest_time["closest_time"]:
+        #         path.append({"from_bus_stop_name":bus_stop_current.name, "to_bus_stop_name" : bus_stop_neighbour.name, "bus_line_name": closest_time["bus_line_name"], "Departure_time": bus_stop_neighbour.schedules[closest_time["bus_line_name"]][closest_time["index"]]})
+        #         bus_stop_current=bus_stop_neighbour
 
-                # if bus_stop_neighbour.convert_in_time(bus_stop_neighbour.schedules[departure_time["bus_line_name"]][departure_time["index"]]) > departure_time:
-                #     departure_time = {"bus_stop_name":bus_stop_neighbour.name,"bus_line": departure_time["bus_line_name"], "closest_time": bus_stop_neighbour.schedules[departure_time["bus_line_name"]][departure_time["index"]]}
-                #     path.append(bus_stop_neighbour)
-                #     bus_stop_current = bus_stop_neighbour
+        # if bus_stop_neighbour.convert_in_time(bus_stop_neighbour.schedules[departure_time["bus_line_name"]][departure_time["index"]]) > departure_time:
+        #     departure_time = {"bus_stop_name":bus_stop_neighbour.name,"bus_line": departure_time["bus_line_name"], "closest_time": bus_stop_neighbour.schedules[departure_time["bus_line_name"]][departure_time["index"]]}
+        #     path.append(bus_stop_neighbour)
+        #     bus_stop_current = bus_stop_neighbour
         # return path
 
-    def find_path(self,  bus_stop_start, bus_stop_end, time):
+    def find_path(self, bus_stop_start, bus_stop_end, time):
         # """ find the path between bus_stop_start and bus_stop_end, direction : go"""
         # path = [bus_stop_start]
         # bus_stop_current = bus_stop_start
@@ -203,7 +206,6 @@ class Graph:  # composed of bus lines
         #                 return self.find_path_new(bus_stop_neighbour, bus_stop_end, path)
         #     return path
 
-
         # bus_stop_current = bus_stop_star
         # path.append(bus_stop_current)
         # while bus_stop_current != bus_stop_end:
@@ -229,7 +231,7 @@ class Graph:  # composed of bus lines
             if bus_stop_current.has_prev_bus_stop():  # do not know if it's useful
                 for bus_stop_neighbour in bus_stop_current.prev_bus_stop:
                     # if not (bus_stop_neighbour in path):
-                        return self.find_path_new(bus_stop_neighbour, bus_stop_end, path)
+                    return self.find_path_new(bus_stop_neighbour, bus_stop_end, path)
             return path
         return path
 
@@ -246,16 +248,159 @@ class Graph:  # composed of bus lines
         #     return path
         # return path
 
-
     def convert_time_in_min(self, time):
         """ return the converted time hour:min into min
         :param time: str
         :return int (minunte)"""
         return int(time.split(":")[0]) * 60 + int(time.split(":")[1])
 
-    def test_fastest(self, bus_stops, bus_stop_start, bus_stop_end): # like dijkstra
-        """ return the fatest path from bus_stop_start to bus_stop_end"""
-    
+    def test_fastest(self, bus_stops, bus_stop_start, bus_stop_current,  bus_stop_end, time_asked, date_asked, fastest_distance = {}, visited_bus_stop = [], predecessor = {}, path = []):  # like dijkstra
+        """ return the fatest path from bus_stop_start to bus_stop_end
+        :param bus_stops: list of all the bus_stops of the network
+        :param bus_stop_start: bus_stop from where we start
+        :param bus_stop_current: the current bus_stop
+        :param bus_stop_end: bus_stop we want to go
+        :param time_asked : String, time asked by the user
+        :param date_asked : String, date asked by the user "regular" or we_holidays"
+        :return path: list composed of the different steps
+        """
+
+        if bus_stop_current == bus_stop_end:
+            return bus_stop_current.name
+
+        # fastest_distance = {}  # distance (or time) to get to each bus_stop ex: {"bus_stop_name": {"distance":distance, "location":[bus_line_name,date, index]},...}
+        # visited_bus_stop = []  # ex: [bus_stop1, bus_stop2,..]
+        # predecessor = {}  # path to go to the last bus_stop and the distance to get to it ex:{"last_bus_stop":bus_stop2, "distance": minute}
+        # path = []  # the fatest_path
+        path.append(bus_stop_current)
+        visited_bus_stop.append(bus_stop_current)
+
+        max_time = 60*24
+
+        for bus_stop in bus_stops:
+            fastest_distance[bus_stop.name] = {"distance":  max_time,"location": []}
+            # time to get to this bus stop we operate in minute
+            # in case that we need more than 1 day to get to the destination, and we don't really know how does the
+            # datetime object work)
+        fastest_distance[bus_stop_start.name] = {"distance": 0, "location": []}
+        # means that we are already at the bus stop (bus_stop_start)
+
+        # update the new distances from
+        for bus_stop_neighbour in bus_stop_current.get_bus_stop_neighbour():
+            for bus_line_name in self.bus_lines_shared(bus_stop_current, bus_stop_neighbour):  # two bus stops could
+                # share several bus lines
+                if bus_stop_neighbour in bus_stop_current.next_bus_stop:
+                    date_dir_asked = date_asked + "_go"
+                else:
+                    date_dir_asked = date_asked + "_back"
+                index = bus_stop_current.get_index_closest_time(bus_line_name, date_dir_asked, time_asked)  # index is the index of
+                # the closest time (in the bus_line_name) to time asked
+                weight = self.convert_time_in_min(
+                    bus_stop_current.get_time(bus_line_name, date_dir_asked, index)) - self.convert_time_in_min(
+                    bus_stop_neighbour.get_time(bus_line_name, date_dir_asked, index))  # time (in minute) between these 2 bus stops
+
+
+                if (predecessor["distance"] + weight) >= fastest_distance[bus_stop_neighbour.name]["distance"]:
+                    fastest_distance[bus_stop_neighbour.name]["distance"] = (predecessor["distance"] + weight)
+                    fastest_distance[bus_stop_neighbour.name]["location"] = [bus_line_name, date_asked, index]
+
+        # choose the fastest unvisited bus_stop from the origin bus stop
+        min_distance = max_time
+        for bus_stop in bus_stops:
+            if not (bus_stop in visited_bus_stop):
+                if fastest_distance[bus_stop.name]["distance"] < min_distance:
+                    min_bus_stop = bus_stop
+                    min_distance = fastest_distance[bus_stop.name]["distance"]
+
+        # relancer l'algorithme djikstra avec le plus court bus stop de l'origine
+
+        return self.test_fastest(bus_stops, bus_stop_start, min_bus_stop,  bus_stop_end, time_asked, date_asked, fastest_distance, visited_bus_stop, predecessor, path)
+
+
+    def dijkstra(self, bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked): # without showing the path, just take the fastest path
+
+        # initialisation
+        bus_stop_to_visit = []
+        max_time = 60*24 #minute in a day
+        dist = {} # ex {"bus_stop1": {"distance":dist1, "last_bus_to_get_there":{"bus_line_name":bus_line_name1, "date_dir_asked": date_dir_asked1, "index":index1}, "bus_stop2": {"distance":dist2, "last_bus_to_get_there":{"bus_line_name":bus_line_name2, "date_dir_asked": date_dir_asked2, "index":index2},...}
+        # last_bus_to_get_there : the time when the bus leave the previous bus_stop to arrive to the current bus_stop
+        for bus_stop in bus_stops:
+            bus_stop_to_visit.append(bus_stop)
+            dist[bus_stop.name] = {"distance": max_time, "last_bus_to_get_there": {"bus_line_name":None, "date_dir_asked": None, "index":None}}
+
+        dist[bus_stop_start.name]["distance"] = 0 # set the distance from bus_stop_start to itself to 0
+        dist[bus_stop_start.name]["last_bus_to_get_there"] = {"bus_line":None, "date_dir_asked": None, "index":None}
+        bus_stop_to_visit.remove(bus_stop_start) # remove the bus_stop_start from bus to visit because we are already at this bus_stop
+        return self.dijkstra_algorithm(bus_stops, bus_stop_start, bus_stop_end, bus_stop_start, time_asked, date_asked, bus_stop_to_visit, dist)
+
+    def dijkstra_algorithm(self, bus_stops, bus_stop_start, bus_stop_end, bus_stop_current, time_asked, date_asked,
+                          bus_stop_to_visit, dist):
+
+        if len(bus_stop_to_visit) ==0:
+            return dist
+
+        for bus_stop_neighbour in bus_stop_current.get_bus_stop_neighbour():
+            if bus_stop_neighbour in bus_stop_to_visit:
+
+                #####
+                for bus_line_name in self.bus_lines_shared(bus_stop_current, bus_stop_neighbour):  # two bus stops could
+                    # share several bus lines, but we don't care if we arrive at the neighbour bus stop the fastest way
+                    if bus_stop_neighbour in bus_stop_current.next_bus_stop:
+                        date_dir_asked = date_asked + "_go"
+                    else:
+                        date_dir_asked = date_asked + "_back"
+                        
+                    #ATTENTION: IL FAUT GERER LE TEMPS D'ATTENTE (index)
+                    index = bus_stop_current.get_index_closest_time(bus_line_name, date_dir_asked,
+                                                                    time_asked)  # index is the index of
+                    # the closest time (in the bus_line_name) to time asked
+                    #time_bus_stop_current = self.convert_time_in_min(bus_stop_current.get_time(bus_line_name, date_dir_asked, index))
+                    while bus_stop_neighbour.get_time(bus_line_name, date_dir_asked, index) =='-': # pour gérer la fourchette, on attend le prochain pour partir
+                        index = index + 1 # even if we are in the back direction we add 1 because the schedule is reversed (kinda)
+                    #ATTENTION: IL FAUT GERER LE TEMPS D'ATTENTE
+
+
+                    time_bus_stop_neighbour = self.convert_time_in_min(bus_stop_neighbour.get_time(bus_line_name, date_dir_asked, index))
+                    time_bus_stop_current = self.convert_time_in_min(bus_stop_current.get_time(bus_line_name, date_dir_asked, index))
+
+                    weight = time_bus_stop_neighbour - time_bus_stop_current
+
+                    # weight = self.convert_time_in_min(
+                    #     bus_stop_current.get_time(bus_line_name, date_dir_asked, index)) - self.convert_time_in_min(
+                    #     bus_stop_neighbour.get_time(bus_line_name, date_dir_asked,
+                    #                                 index))  # time (in minute) between these 2 bus stops
+                #####
+                    new_dist = weight + dist[bus_stop_current.name]["distance"]
+                    if new_dist < dist[bus_stop_neighbour.name]["distance"]:
+                        dist[bus_stop_neighbour.name]["distance"] = new_dist
+                        dist[bus_stop_neighbour.name]["last_bus_to_get_there"]["bus_line_name"] = bus_line_name
+                        dist[bus_stop_neighbour.name]["last_bus_to_get_there"]["date_dir_asked"] = date_dir_asked
+                        dist[bus_stop_neighbour.name]["last_bus_to_get_there"]["index"] = index
+
+        #choose the closest bus_stop from the initial bus_stop
+        min_time = 60*24
+        bus_stop_closest_to_start_and_not_yet_visited = None
+        for bus_stop in bus_stop_to_visit:
+            if dist[bus_stop.name]["distance"] <= min_time:
+                min_time = dist[bus_stop.name]["distance"]
+                bus_stop_closest_to_start_and_not_yet_visited = bus_stop
+
+        #bus_stop_closest_to_start_and_not_yet_visited = # function
+        bus_stop_to_visit.remove(bus_stop_closest_to_start_and_not_yet_visited)
+
+        #ATTENTION : IL FAUT QUE LE TIME ASKED VARIE (IMPOSSIBLE DE TOUT LE TEMPS ARRIVER à LA MEME HEURE A UN ARRET SUR NOTRE CHEMIN
+        #TIME_ASKED EST L'HEURE D'ARRIVEE AU PROCHAIN ARRET(bus_stop_closest_to_start_and_not_yet_visited),
+        # pour cela je dois avoir bus_line_name, date et index
+
+        bus_line_name1 = dist[bus_stop_closest_to_start_and_not_yet_visited.name]["last_bus_to_get_there"]["bus_line_name"]
+        date_dir_asked1 = dist[bus_stop_closest_to_start_and_not_yet_visited.name]["last_bus_to_get_there"]["date_dir_asked"]
+        index1 = dist[bus_stop_closest_to_start_and_not_yet_visited.name]["last_bus_to_get_there"]["index"]
+        time_asked = bus_stop_closest_to_start_and_not_yet_visited.schedules[bus_line_name1][date_dir_asked1][index1]
+
+        return self.dijkstra_algorithm(bus_stops, bus_stop_start, bus_stop_end, bus_stop_closest_to_start_and_not_yet_visited, time_asked, date_asked, bus_stop_to_visit, dist)
+
+
+
     def shortest(self, start_stop, end_stop):
         pass
 
@@ -267,9 +412,19 @@ class Graph:  # composed of bus lines
 
     def on_same_bus_line(self, bus_stop1, bus_stop2):
         """return True if bus_stop1 and bus_stop2 are on the same bus line, else False"""
-        for bus_line_name in bus_stop1.schedules: # if they have one shared bus_line, it has to be in bus_stop1's bus lines (we could do it with bus_stop2)
+        for bus_line_name in bus_stop1.schedules:  # if they have one shared bus_line, it has to be in bus_stop1's bus lines (we could do it with bus_stop2)
             if bus_line_name in bus_stop2.schedules:
                 return True
         return False
 
-        pass
+    def bus_lines_shared(self, bus_stop1, bus_stop2):
+        """ return a list of all the bus line shared by two bus_stop"""
+        bus_lines_shared = []  # list of names of each bus line
+        for bus_line_name in bus_stop1.schedules:  # if they have one shared bus_line, it has to be in bus_stop1's bus lines (we could do it with bus_stop2)
+            if bus_line_name in bus_stop2.schedules:
+                bus_lines_shared.append(bus_line_name)
+        return bus_lines_shared
+
+
+
+

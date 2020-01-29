@@ -70,13 +70,19 @@ def main():
                 else:
                     date_asked = "we_holidays"
                 #path = graph.find_path(bus_stop_start, bus_stop_end, time_asked)
-                path = graph.find_path_new(bus_stop_start, bus_stop_end)
-                path_names = []
-                # path = graph.find_path(bus_stop_start, bus_stop_end, time_asked, date_asked)
-                for bus_stop in path:
-                    path_names.append(bus_stop.name)
-                print(path_names)
-                #print(path)
+                #path = graph.find_path_new(bus_stop_start, bus_stop_end)
+
+                #path = graph.test_fastest(graph.bus_stops, bus_stop_start, bus_stop_start, bus_stop_end, time_asked, date_asked)
+                # print(path)
+
+                dist = graph.dijkstra(graph.bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked)
+                print(dist)
+                # path_names = []
+                # # path = graph.find_path(bus_stop_start, bus_stop_end, time_asked, date_asked)
+                # for bus_stop in path:
+                #     path_names.append(bus_stop.name)
+                # print(path_names)
+                # #print(path)
                 run = False
             else:
                 print('\x1b[0;30;41m' + 'this bus stop does not exist or it is same as the start one !' + '\x1b[0m')
