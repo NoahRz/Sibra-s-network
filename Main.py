@@ -17,7 +17,7 @@ def main():
     graph.add_bus_line(data_file_name1)
     graph.add_bus_line(data_file_name2)
 
-    # for bus_stop in graph.bus_stops:
+    # for bus_stop in graph.bus_stops: # display test
     #     l = ["prev:"]
     #     for b in bus_stop.prev_bus_stop:
     #         l.append(b.name)
@@ -26,7 +26,7 @@ def main():
     #         l.append(b.name)
     #     print(bus_stop.name, l)
 
-    # for stop in graph.bus_stops:
+    # for stop in graph.bus_stops: # display test
     #     print(stop.name, stop.schedules)
     # print(len(graph.bus_stops))
 
@@ -88,7 +88,6 @@ def main():
                 print('\x1b[0;30;41m' + 'this bus stop does not exist or it is same as the start one !' + '\x1b[0m')
         else:
             print('\x1b[0;30;41m' + 'this bus stop does not exist !' + '\x1b[0m')
-
 
 
 if __name__ == "__main__":
