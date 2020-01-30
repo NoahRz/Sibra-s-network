@@ -69,14 +69,10 @@ def main():
                     date_asked = "regular"
                 else:
                     date_asked = "we_holidays"
-                #path = graph.find_path(bus_stop_start, bus_stop_end, time_asked)
                 #path = graph.find_path_new(bus_stop_start, bus_stop_end)
 
-                #path = graph.test_fastest(graph.bus_stops, bus_stop_start, bus_stop_start, bus_stop_end, time_asked, date_asked)
-                # print(path)
-
-                dist = graph.dijkstra(graph.bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked)
-                print(dist)
+                dist2 = graph.dijkstra2(graph.bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked)
+                print(dist2)
                 # path_names = []
                 # # path = graph.find_path(bus_stop_start, bus_stop_end, time_asked, date_asked)
                 # for bus_stop in path:
