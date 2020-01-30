@@ -226,20 +226,21 @@ class Graph:  # composed of bus lines
                     else:
                         date_dir_asked = date_asked + "_back"
                         
-                    #ATTENTION: IL FAUT GERER LE TEMPS D'ATTENTE (index)
                     index = bus_stop_current.get_index_closest_time(bus_line_name, date_dir_asked,
                                                                     time_asked)  # index is the index of
                     # the closest time (in the bus_line_name) to time asked
+
                     #time_bus_stop_current = self.convert_time_in_min(bus_stop_current.get_time(bus_line_name, date_dir_asked, index))
                     while bus_stop_neighbour.get_time(bus_line_name, date_dir_asked, index) =='-': # pour gérer la fourchette, on attend le prochain pour partir
                         index = index + 1 # even if we are in the back direction we add 1 because the schedule is reversed (kinda)
-                    #ATTENTION: IL FAUT GERER LE TEMPS D'ATTENTE
 
+                    waiting_time = self.convert_time_in_min(bus_stop_current.schedules[bus_line_name][date_dir_asked][index]) - self.convert_time_in_min(time_asked)
+                    # waiting time before taking the bus (works)
 
                     time_bus_stop_neighbour = self.convert_time_in_min(bus_stop_neighbour.get_time(bus_line_name, date_dir_asked, index))
                     time_bus_stop_current = self.convert_time_in_min(bus_stop_current.get_time(bus_line_name, date_dir_asked, index))
 
-                    weight = time_bus_stop_neighbour - time_bus_stop_current  # time (in minute) between these 2 bus stops
+                    weight = (time_bus_stop_neighbour - time_bus_stop_current) + waiting_time # time (in minute) between these 2 bus stops
 
                 #####
                     new_dist = weight + dist[bus_stop_current.name]["distance"]
