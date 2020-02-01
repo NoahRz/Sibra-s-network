@@ -254,7 +254,6 @@ class Graph:  # composed of bus lines
                                        bus_stop_to_visit, dist, paths)
 
 
-
     def shortest(self, start_stop, end_stop):
         pass
 
@@ -264,12 +263,6 @@ class Graph:  # composed of bus lines
     def foremost(self, start_stop, end_stop):
         pass
 
-    def on_same_bus_line(self, bus_stop1, bus_stop2):
-        """return True if bus_stop1 and bus_stop2 are on the same bus line, else False"""
-        for bus_line_name in bus_stop1.schedules:  # if they have one shared bus_line, it has to be in bus_stop1's bus lines (we could do it with bus_stop2)
-            if bus_line_name in bus_stop2.schedules:
-                return True
-        return False
 
     def bus_lines_shared(self, bus_stop1, bus_stop2):
         """ return a list of all the bus line shared by two bus_stop"""
