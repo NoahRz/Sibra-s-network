@@ -39,9 +39,10 @@ def main():
         # we enter the bus stop's number in case that the user doesn't know how to write the bus stop name
         display(graph.bus_stops)
         print("Select a number :")
+        # print("a")
         ans = input()
         if 0 <= int(ans) < size:
-            print("END")
+            print("END :")
             # print again the list of bus stop with the start selected
             display(graph.bus_stops, para=ans)
             bus_stop_start = graph.bus_stops[int(ans)]
@@ -79,18 +80,23 @@ def main():
 def display(bus_stops, para=None, para1=None):
     """display the list of bus_stops
     :param bus_stops: list og bus_stops
-    :param ans: int, answer of the user
-    :param ans1: int, answer of the user
+    :param para: int, answer of the user
+    :param para1: int, answer of the user
     """
+    i = 0
     for bus_stop in bus_stops:
+        if i != 0 and (i % 5) == 0:  # print 5 elements per line
+            print()
         if (para is not None) and int(para) == bus_stops.index(bus_stop):
-            print('\033[1;34m' + str(
-                bus_stops.index(bus_stop)) + " " + bus_stop.name + '\033[0m')  # display, blue text color
+            print('\033[1;34m' + '{0:<25s}'.format(str(
+                bus_stops.index(bus_stop)) + " " + bus_stop.name) + '\033[0m', end=' ')  # display, blue text color
         elif (para1 is not None) and int(para1) == bus_stops.index(bus_stop):
-            print('\033[1;31m' + str(
-                bus_stops.index(bus_stop)) + " " + bus_stop.name + '\033[0m')  # display, red text color
+            print('\033[1;31m' + '{0:<25s}'.format(str(
+                bus_stops.index(bus_stop)) + " " + bus_stop.name) + '\033[0m', end=' ')  # display, red text color
         else:
-            print(bus_stops.index(bus_stop), bus_stop.name)
+            print('{0:<25s}'.format(str(bus_stops.index(bus_stop)) + " " + bus_stop.name), end=' ')
+        i = i + 1
+    print()  # to stop printing on the same line
 
 
 if __name__ == "__main__":
