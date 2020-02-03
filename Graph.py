@@ -201,6 +201,8 @@ class Graph:  # composed of bus lines
 
                     waiting_time = self.convert_time_in_min(bus_stop_current.schedules[bus_line_name][date_dir_asked][index]) - self.convert_time_in_min(time_asked)
                     # waiting time before taking the bus (works)
+                    if waiting_time < 0:  # if we wait for the first bus tomorrow
+                        waiting_time = (self.convert_time_in_min('24:00')-self.convert_time_in_min(time_asked)) + self.convert_time_in_min(bus_stop_current.schedules[bus_line_name][date_dir_asked][index])
 
                     time_bus_stop_neighbour = self.convert_time_in_min(bus_stop_neighbour.get_time(bus_line_name, date_dir_asked, index))
                     time_bus_stop_current = self.convert_time_in_min(bus_stop_current.get_time(bus_line_name, date_dir_asked, index))
@@ -217,7 +219,7 @@ class Graph:  # composed of bus lines
                         dist[bus_stop_neighbour.name]["last_bus_to_get_there"]["index"] = index
 
         # choose the closest bus_stop from the initial bus_stop
-        min_time = 60 * 24
+        min_time = 60 * 24 # why not infinity ? 
         bus_stop_closest_to_start_and_not_yet_visited = None
         for bus_stop in bus_stop_to_visit:
             if dist[bus_stop.name]["distance"] <= min_time:

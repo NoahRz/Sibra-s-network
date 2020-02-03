@@ -90,17 +90,9 @@ class Stop:
         index = 0
         nb = (len(self.schedules[bus_line_name][date_dir_asked]))
         converted_time_asked = self.convert_time_in_min(time_asked) # convert the time_asked into minute
-        # if self.schedules[bus_line_name][date_dir_asked][index]!= "-":
-        #     current_time = self.convert_time_in_min(self.schedules[bus_line_name][date_dir_asked][index])  # convert the current time into datetime object
-        # else:
-        #     current_time = None
-        # if self.convert_time_in_min(self.schedules[bus_line_name][date_dir_asked][index +1]):
-        #     next_time = self.convert_time_in_min(self.schedules[bus_line_name][date_dir_asked][index +1]) # convert the next time into datetime object
-        # else:
-        #     next_time = None
 
         for index in range(nb-1):
-            # there are only 2 cases to return the right index, but for both we return the index of the closest time
+            # there are only 3 cases to return the right index, but for these three we return the index of the closest time
             # after (or equal) the time asked
 
             # current_time = self.convert_time_in_min(self.schedules[bus_line_name][date_dir_asked][index])  # convert the current time into datetime object (iteration)
@@ -120,3 +112,8 @@ class Stop:
                 return index + 1
             if self.schedules[bus_line_name][date_dir_asked][index] == "-" and self.schedules[bus_line_name][date_dir_asked][index+1] != "-" and converted_time_asked < next_time:
                 return index + 1
+
+        # if we end up here, that means that we did not find a bus today, so we have to wait for the first one tomorrow
+        for index in range(nb-1):
+            if self.schedules[bus_line_name][date_dir_asked][index] != "-":
+                return index
