@@ -61,9 +61,20 @@ def main():
                 else:
                     date_asked = "we_holidays"
                 # path = graph.find_path_new(bus_stop_start, bus_stop_end)
-
-                dist2 = graph.dijkstra2(graph.bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked)
-                print(dist2)
+                print("Please choose one of these : 1 Fastest path - 2 Shortest path - 3 Foremost path")
+                ans3 = input()
+                if int(ans3) == 1:
+                    print('\033[1;32m' + "Fastest path " + '\033[0m')
+                    dist2 = graph.dijkstra2(graph.bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked)
+                    print(dist2)
+                elif int(ans3) == 2:
+                    print('\033[1;32m' + "Shortest path " + '\033[0m')
+                    dist2 = graph.dijkstra3(graph.bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked)
+                    print(dist2)
+                elif int(ans3) == 3:
+                    print('\033[1;32m' + "Foremost path" + '\033[0m')
+                else:
+                    print('\x1b[0;30;41m' + 'Choose one of these 3' + '\x1b[0m')
                 # path_names = []
                 # # path = graph.find_path(bus_stop_start, bus_stop_end, time_asked, date_asked)
                 # for bus_stop in path:
