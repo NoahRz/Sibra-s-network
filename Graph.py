@@ -439,15 +439,13 @@ class Graph:  # composed of bus lines
 
                     waiting_time = self.convert_time_in_min(bus_stop_current.schedules[bus_line_name][date_dir_asked][index]) - self.convert_time_in_min(time_asked)
                     # waiting time before taking the bus (works)
-                    if waiting_time < 0:  # if we wait for the first bus tomorrow
-                        day = 1
-                    else:
-                        day = 0
                     time_arrived_at_bus_stop_neighbour = self.convert_time_in_min(bus_stop_neighbour.get_time(bus_line_name, date_dir_asked, index))
+                    if waiting_time < 0:  # if we wait for the first bus tomorrow
+                        time_arrived_at_bus_stop_neighbour = time_arrived_at_bus_stop_neighbour + (60*24)
+                        # we add one day, don't really matter the additional value (it might be different than the real
+                        # waiting time) but it has to be enough greater to recognize that we wait for the next day
 
-                    time_bus_stop_current = self.convert_time_in_min(bus_stop_current.get_time(bus_line_name, date_dir_asked, index))
-
-                    # weight =
+                    #time_bus_stop_current = self.convert_time_in_min(bus_stop_current.get_time(bus_line_name, date_dir_asked, index))
 
                     #####
                     if time_arrived_at_bus_stop_neighbour < dist[bus_stop_neighbour.name]["time_arrived"]:

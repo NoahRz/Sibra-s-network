@@ -73,6 +73,8 @@ def main():
                     print(dist2)
                 elif int(ans3) == 3:
                     print('\033[1;32m' + "Foremost path" + '\033[0m')
+                    dist2 = graph.dijkstra4(graph.bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked)
+                    print(dist2)
                 else:
                     print('\x1b[0;30;41m' + 'Choose one of these 3' + '\x1b[0m')
                 # path_names = []
