@@ -142,7 +142,7 @@ class Graph:  # composed of bus lines
         """
         # initialisation
         bus_stop_to_visit = []
-        max_time = 60 * 24  # minutes in a day
+        max_time = math.inf
         dist = {}  # ex {"bus_stop1_name": {"distance":dist1, "last_bus_to_get_there":{"last_bus_stop_name": last_bus_stop1, "bus_line_name":bus_line_name1, "date_dir_asked": date_dir_asked1, "index":index1}, "bus_stop2_name": {"distance":dist2, "last_bus_to_get_there":{"last_bus_stop_name": last_bus_stop2,"bus_line_name":bus_line_name2, "date_dir_asked": date_dir_asked2, "index":index2},...}
         # last_bus_to_get_there : the time when the bus leave the previous bus_stop to arrive to the current bus_stop
         paths = {} # track the fastest path to get to each bus_stop
@@ -219,7 +219,7 @@ class Graph:  # composed of bus lines
                         dist[bus_stop_neighbour.name]["last_bus_to_get_there"]["index"] = index
 
         # choose the closest bus_stop from the initial bus_stop
-        min_time = 60 * 24 # why not infinity ?
+        min_time = math.inf
         bus_stop_closest_to_start_and_not_yet_visited = None
         for bus_stop in bus_stop_to_visit:
             if dist[bus_stop.name]["distance"] <= min_time:
@@ -333,7 +333,7 @@ class Graph:  # composed of bus lines
                         dist[bus_stop_neighbour.name]["last_bus_to_get_there"]["index"] = index
 
         # choose the closest bus_stop from the initial bus_stop
-        min_nb_step = 60 * 24 # why not infinity ?
+        min_nb_step = math.inf
         bus_stop_closest_to_start_and_not_yet_visited = None
         for bus_stop in bus_stop_to_visit:
             if dist[bus_stop.name]["step_nb"] <= min_nb_step:
@@ -380,7 +380,7 @@ class Graph:  # composed of bus lines
         """
         # initialisation
         bus_stop_to_visit = []
-        max_time_arrived = 60 * 24  # minutes in a day (why not infinity?)
+        max_time_arrived = math.inf
         dist = {}  # ex {"bus_stop1_name": {"time_arrived":time_arrived1, "last_bus_to_get_there":{"last_bus_stop_name": last_bus_stop1, "bus_line_name":bus_line_name1, "date_dir_asked": date_dir_asked1, "index":index1}, "bus_stop2_name": {"time_arrived":time_arrived2, "last_bus_to_get_there":{"last_bus_stop_name": last_bus_stop2,"bus_line_name":bus_line_name2, "date_dir_asked": date_dir_asked2, "index":index2},...}
         # last_bus_to_get_there : the time when the bus leave the previous bus_stop to arrive to the current bus_stop
         paths = {} # track the fastest path to get to each bus_stop
@@ -440,9 +440,11 @@ class Graph:  # composed of bus lines
                     waiting_time = self.convert_time_in_min(bus_stop_current.schedules[bus_line_name][date_dir_asked][index]) - self.convert_time_in_min(time_asked)
                     # waiting time before taking the bus (works)
                     if waiting_time < 0:  # if we wait for the first bus tomorrow
-                        waiting_time = (self.convert_time_in_min('24:00')-self.convert_time_in_min(time_asked)) + self.convert_time_in_min(bus_stop_current.schedules[bus_line_name][date_dir_asked][index])
-
+                        day = 1
+                    else:
+                        day = 0
                     time_arrived_at_bus_stop_neighbour = self.convert_time_in_min(bus_stop_neighbour.get_time(bus_line_name, date_dir_asked, index))
+
                     time_bus_stop_current = self.convert_time_in_min(bus_stop_current.get_time(bus_line_name, date_dir_asked, index))
 
                     # weight =
@@ -456,7 +458,7 @@ class Graph:  # composed of bus lines
                         dist[bus_stop_neighbour.name]["last_bus_to_get_there"]["index"] = index
 
         # choose the closest bus_stop from the initial bus_stop
-        min_time = 60 * 24 # why not infinity ?
+        min_time = math.inf
         bus_stop_closest_to_start_and_not_yet_visited = None
         for bus_stop in bus_stop_to_visit:
             if dist[bus_stop.name]["time_arrived"] <= min_time:
