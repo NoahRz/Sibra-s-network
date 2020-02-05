@@ -64,17 +64,17 @@ def main():
                 print("Please choose one of these : 1 Fastest path - 2 Shortest path - 3 Foremost path")
                 ans3 = input()
                 if int(ans3) == 1:
-                    print('\033[1;32m' + "Fastest path " + '\033[0m')
-                    dist2 = graph.dijkstra2(graph.bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked)
-                    print(dist2)
+                    print('\n'+'\033[1;32m' + "Fastest path " + '\033[0m')
+                    path = graph.dijkstra2(graph.bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked)
+                    display_path(path)
                 elif int(ans3) == 2:
-                    print('\033[1;32m' + "Shortest path " + '\033[0m')
-                    dist2 = graph.dijkstra3(graph.bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked)
-                    print(dist2)
+                    print('\n'+'\033[1;32m' + "Shortest path " + '\033[0m')
+                    path = graph.dijkstra3(graph.bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked)
+                    display_path(path)
                 elif int(ans3) == 3:
-                    print('\033[1;32m' + "Foremost path" + '\033[0m')
-                    dist2 = graph.dijkstra4(graph.bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked)
-                    print(dist2)
+                    print('\n'+'\033[1;32m' + "Foremost path" + '\033[0m')
+                    path = graph.dijkstra4(graph.bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked)
+                    display_path(path)
                 else:
                     print('\x1b[0;30;41m' + 'Choose one of these 3' + '\x1b[0m')
                 # path_names = []
@@ -92,7 +92,7 @@ def main():
 
 def display(bus_stops, para=None, para1=None):
     """display the list of bus_stops
-    :param bus_stops: list og bus_stops
+    :param bus_stops: list of bus_stops
     :param para: int, answer of the user
     :param para1: int, answer of the user
     """
@@ -110,6 +110,25 @@ def display(bus_stops, para=None, para1=None):
             print('{0:<25s}'.format(str(bus_stops.index(bus_stop)) + " " + bus_stop.name), end=' ')
         i = i + 1
     print()  # to stop printing on the same line
+
+def display_path(path):
+    """ display the path
+    :param path: list of dict of bus stop"""
+    for bus_stop_dict in path:
+        key = list(bus_stop_dict.keys())[0] # the first key of the dict
+        if path.index(bus_stop_dict) == 0:  # the fisrt bus_stop
+            print('\x1b[6;30;44m' + 'START' + '\x1b[0m')
+            print("bus_stop : "+ '\033[1;34m' + key + '\033[0m' + " ,Time :", bus_stop_dict[key]["Time"])
+            print("bus line :", bus_stop_dict[key]["bus_line_name"], bus_stop_dict[key]["date_dir_asked"])
+            print(".\n.\n.")
+        elif path.index(bus_stop_dict) == len(path)-1:  # the last bus_stop
+            print("bus_stop : " + '\033[1;31m' + key + '\033[0m' + " ,Time :", bus_stop_dict[key]["Time"])
+            print("bus line :", bus_stop_dict[key]["bus_line_name"], bus_stop_dict[key]["date_dir_asked"])
+            print('\x1b[6;30;41m' + 'END' + '\x1b[0m')
+        else:
+            print("bus_stop : " + key + " ,Time :", bus_stop_dict[key]["Time"])
+            print("bus line :", bus_stop_dict[key]["bus_line_name"], bus_stop_dict[key]["date_dir_asked"])
+            print(".\n.\n.")
 
 
 if __name__ == "__main__":
