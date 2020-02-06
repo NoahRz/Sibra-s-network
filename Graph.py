@@ -143,7 +143,7 @@ class Graph:  # composed of bus lines
         # initialisation
         bus_stop_to_visit = []
         max_time = math.inf
-        dist = {}  # ex {"bus_stop1_name": {"distance":dist1, "last_bus_to_get_there":{"last_bus_stop_name": last_bus_stop1, "bus_line_name":bus_line_name1, "date_dir_asked": date_dir_asked1, "index":index1}, "bus_stop2_name": {"distance":dist2, "last_bus_to_get_there":{"last_bus_stop_name": last_bus_stop2,"bus_line_name":bus_line_name2, "date_dir_asked": date_dir_asked2, "index":index2},...}
+        dist = {}  # ex {"bus_stop1_name": {"time_to_get_there":dist1, "last_bus_to_get_there":{"last_bus_stop_name": last_bus_stop1, "bus_line_name":bus_line_name1, "date_dir_asked": date_dir_asked1, "index":index1}, "bus_stop2_name": {"time_to_get_there":dist2, "last_bus_to_get_there":{"last_bus_stop_name": last_bus_stop2,"bus_line_name":bus_line_name2, "date_dir_asked": date_dir_asked2, "index":index2},...}
         # last_bus_to_get_there : the time when the bus leave the previous bus_stop to arrive to the current bus_stop
         paths = {} # track the fastest path to get to each bus_stop
         # ex path =  {"bus_stop1_name":[{"bus_stop11_name":{"bus_line_name":bus_line_name1, "date_dir_asked": date_dir_asked1,"time":time11}},{"bus_stop12_name":{"bus_line_name":bus_line_name1, "date_dir_asked": date_dir_asked1,"time":time12}},...],
@@ -152,12 +152,12 @@ class Graph:  # composed of bus lines
 
         for bus_stop in bus_stops:
             bus_stop_to_visit.append(bus_stop)
-            dist[bus_stop.name] = {"distance": max_time,
+            dist[bus_stop.name] = {"time_to_get_there": max_time,
                                    "last_bus_to_get_there": {"last_bus_stop": None, "bus_line_name": None, "date_dir_asked": None,
                                                              "index": None}}
             paths[bus_stop.name] = []
 
-        dist[bus_stop_start.name]["distance"] = 0  # set the distance from bus_stop_start to itself to 0
+        dist[bus_stop_start.name]["time_to_get_there"] = 0  # set the time_to_get_there from bus_stop_start to itself to 0
         dist[bus_stop_start.name]["last_bus_to_get_there"] = {"last_bus_stop" : None, "bus_line": None, "date_dir_asked": None, "index": None}
         bus_stop_to_visit.remove(bus_stop_start)  # remove the bus_stop_start from bus to visit because we are already at this bus_stop
         return self.dijkstra_algorithm2(bus_stops, bus_stop_start, bus_stop_end, bus_stop_start, time_asked, date_asked,
@@ -210,9 +210,9 @@ class Graph:  # composed of bus lines
                     weight = (time_bus_stop_neighbour - time_bus_stop_current) + waiting_time  # time (in minute) between these 2 bus stops
 
                     #####
-                    new_dist = weight + dist[bus_stop_current.name]["distance"]
-                    if new_dist < dist[bus_stop_neighbour.name]["distance"]:
-                        dist[bus_stop_neighbour.name]["distance"] = new_dist
+                    new_dist = weight + dist[bus_stop_current.name]["time_to_get_there"]
+                    if new_dist < dist[bus_stop_neighbour.name]["time_to_get_there"]:
+                        dist[bus_stop_neighbour.name]["time_to_get_there"] = new_dist
                         dist[bus_stop_neighbour.name]["last_bus_to_get_there"]["last_bus_stop"] = bus_stop_current
                         dist[bus_stop_neighbour.name]["last_bus_to_get_there"]["bus_line_name"] = bus_line_name
                         dist[bus_stop_neighbour.name]["last_bus_to_get_there"]["date_dir_asked"] = date_dir_asked
@@ -222,8 +222,8 @@ class Graph:  # composed of bus lines
         min_time = math.inf
         bus_stop_closest_to_start_and_not_yet_visited = None
         for bus_stop in bus_stop_to_visit:
-            if dist[bus_stop.name]["distance"] <= min_time:
-                min_time = dist[bus_stop.name]["distance"]
+            if dist[bus_stop.name]["time_to_get_there"] <= min_time:
+                min_time = dist[bus_stop.name]["time_to_get_there"]
                 bus_stop_closest_to_start_and_not_yet_visited = bus_stop
 
         bus_stop_to_visit.remove(bus_stop_closest_to_start_and_not_yet_visited)
