@@ -40,15 +40,15 @@ def main():
                 ans3 = input()
                 if int(ans3) == 1:
                     print('\n'+'\033[1;32m' + "Fastest path " + '\033[0m')
-                    path = graph.dijkstra2(graph.bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked)
+                    path = graph.fastest(graph.bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked)
                     display_path(path)
                 elif int(ans3) == 2:
                     print('\n'+'\033[1;32m' + "Shortest path " + '\033[0m')
-                    path = graph.dijkstra3(graph.bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked)
+                    path = graph.shortest(graph.bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked)
                     display_path(path)
                 elif int(ans3) == 3:
                     print('\n'+'\033[1;32m' + "Foremost path" + '\033[0m')
-                    path = graph.dijkstra4(graph.bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked)
+                    path = graph.foremost(graph.bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked)
                     display_path(path)
                 else:
                     print('\x1b[0;30;41m' + 'Choose one of these 3' + '\x1b[0m')

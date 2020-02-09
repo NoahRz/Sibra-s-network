@@ -113,7 +113,7 @@ class Graph:  # composed of bus lines
         return int(time.split(":")[0]) * 60 + int(time.split(":")[1])
 
 
-    def dijkstra2(self, bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked):  #  showing the path, just take the fastest path
+    def fastest(self, bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked):  #  showing the path, just take the fastest path
         """ initialise dijkstra addapted to the problem and start the dijkstra's algorithm
         :param bus_stops: list of all the bus_stop
         :param bus_stop_start: bus_stop from where we start
@@ -142,10 +142,10 @@ class Graph:  # composed of bus lines
         dist[bus_stop_start.name]["time_to_get_there"] = 0  # set the time_to_get_there from bus_stop_start to itself to 0
         dist[bus_stop_start.name]["last_bus_to_get_there"] = {"last_bus_stop" : None, "bus_line": None, "date_dir_asked": None, "index": None}
         bus_stop_to_visit.remove(bus_stop_start)  # remove the bus_stop_start from bus to visit because we are already at this bus_stop
-        return self.dijkstra_algorithm2(bus_stops, bus_stop_start, bus_stop_end, bus_stop_start, time_asked, date_asked,
+        return self.fastest_algorithm(bus_stops, bus_stop_start, bus_stop_end, bus_stop_start, time_asked, date_asked,
                                        bus_stop_to_visit, dist, paths)
 
-    def dijkstra_algorithm2(self, bus_stops, bus_stop_start, bus_stop_end, bus_stop_current, time_asked, date_asked, bus_stop_to_visit, dist, paths):
+    def fastest_algorithm(self, bus_stops, bus_stop_start, bus_stop_end, bus_stop_current, time_asked, date_asked, bus_stop_to_visit, dist, paths):
         """
         do the dijkstra's algorthm and return the fastest path from bus_stop_star to bus_stop_end considering the time_asked and the date_asked
         :param bus_stops: list of all the bus_stop
@@ -227,11 +227,11 @@ class Graph:  # composed of bus lines
         paths[bus_stop_closest_to_start_and_not_yet_visited.name].append({bus_stop_closest_to_start_and_not_yet_visited.name: {"bus_line_name": bus_line_name1, "date_dir_asked": date_dir_asked1, "Time": time_asked}})
         # we add the next bus_stop we will serve
 
-        return self.dijkstra_algorithm2(bus_stops, bus_stop_start, bus_stop_end,
+        return self.fastest_algorithm(bus_stops, bus_stop_start, bus_stop_end,
                                        bus_stop_closest_to_start_and_not_yet_visited, time_asked, date_asked,
                                        bus_stop_to_visit, dist, paths)
 
-    def dijkstra3(self, bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked):  #  showing the path, just take the shortest path
+    def shortest(self, bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked):  #  showing the path, just take the shortest path
         """ initialise dijkstra addapted to the problem and start the dijkstra's algorithm
         :param bus_stops: list of all the bus_stop
         :param bus_stop_start: bus_stop from where we start
@@ -260,10 +260,10 @@ class Graph:  # composed of bus lines
         dist[bus_stop_start.name]["step_nb"] = 0  # set the nb_step from bus_stop_start to itself to 0
         dist[bus_stop_start.name]["last_bus_to_get_there"] = {"last_bus_stop" : None, "bus_line": None, "date_dir_asked": None, "index": None}
         bus_stop_to_visit.remove(bus_stop_start)  # remove the bus_stop_start from bus to visit because we are already at this bus_stop
-        return self.dijkstra_algorithm3(bus_stops, bus_stop_start, bus_stop_end, bus_stop_start, time_asked, date_asked,
+        return self.shortest_algorithm(bus_stops, bus_stop_start, bus_stop_end, bus_stop_start, time_asked, date_asked,
                                        bus_stop_to_visit, dist, paths)
 
-    def dijkstra_algorithm3(self, bus_stops, bus_stop_start, bus_stop_end, bus_stop_current, time_asked, date_asked, bus_stop_to_visit, dist, paths):
+    def shortest_algorithm(self, bus_stops, bus_stop_start, bus_stop_end, bus_stop_current, time_asked, date_asked, bus_stop_to_visit, dist, paths):
         """
         do the dijkstra's algorthm and return the shortest path from bus_stop_star to bus_stop_end considering the time_asked and the date_asked
         :param bus_stops: list of all the bus_stop
@@ -334,11 +334,11 @@ class Graph:  # composed of bus lines
         paths[bus_stop_closest_to_start_and_not_yet_visited.name].append({bus_stop_closest_to_start_and_not_yet_visited.name: {"bus_line_name": bus_line_name1, "date_dir_asked": date_dir_asked1, "Time": time_asked}})
         # we add the next bus_stop we will serve
 
-        return self.dijkstra_algorithm3(bus_stops, bus_stop_start, bus_stop_end,
+        return self.shortest_algorithm(bus_stops, bus_stop_start, bus_stop_end,
                                        bus_stop_closest_to_start_and_not_yet_visited, time_asked, date_asked,
                                        bus_stop_to_visit, dist, paths)
 
-    def dijkstra4(self, bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked):  #  showing the path, just take the Foremost path
+    def foremost(self, bus_stops, bus_stop_start, bus_stop_end, time_asked, date_asked):  #  showing the path, just take the Foremost path
         """ initialise dijkstra addapted to the problem and start the dijkstra's algorithm
         :param bus_stops: list of all the bus_stop
         :param bus_stop_start: bus_stop from where we start
@@ -367,10 +367,10 @@ class Graph:  # composed of bus lines
         dist[bus_stop_start.name]["time_arrived"] = 0  # set the distance from bus_stop_start to itself to 0
         dist[bus_stop_start.name]["last_bus_to_get_there"] = {"last_bus_stop" : None, "bus_line": None, "date_dir_asked": None, "index": None}
         bus_stop_to_visit.remove(bus_stop_start)  # remove the bus_stop_start from bus to visit because we are already at this bus_stop
-        return self.dijkstra_algorithm4(bus_stops, bus_stop_start, bus_stop_end, bus_stop_start, time_asked, date_asked,
+        return self.foremost_algorithm(bus_stops, bus_stop_start, bus_stop_end, bus_stop_start, time_asked, date_asked,
                                        bus_stop_to_visit, dist, paths)
 
-    def dijkstra_algorithm4(self, bus_stops, bus_stop_start, bus_stop_end, bus_stop_current, time_asked, date_asked, bus_stop_to_visit, dist, paths):
+    def foremost_algorithm(self, bus_stops, bus_stop_start, bus_stop_end, bus_stop_current, time_asked, date_asked, bus_stop_to_visit, dist, paths):
         """
         do the dijkstra's algorthm and return the fastest path from bus_stop_star to bus_stop_end considering the time_asked and the date_asked
         :param bus_stops: list of all the bus_stop
@@ -446,20 +446,9 @@ class Graph:  # composed of bus lines
         paths[bus_stop_closest_to_start_and_not_yet_visited.name].append({bus_stop_closest_to_start_and_not_yet_visited.name: {"bus_line_name": bus_line_name1, "date_dir_asked": date_dir_asked1, "Time": time_asked}})
         # we add the next bus_stop we will serve
 
-        return self.dijkstra_algorithm4(bus_stops, bus_stop_start, bus_stop_end,
+        return self.foremost_algorithm(bus_stops, bus_stop_start, bus_stop_end,
                                        bus_stop_closest_to_start_and_not_yet_visited, time_asked, date_asked,
                                        bus_stop_to_visit, dist, paths)
-
-
-
-    def shortest(self, start_stop, end_stop):
-        pass
-
-    def fastest(self, start_stop, end_stop):
-        pass
-
-    def foremost(self, start_stop, end_stop):
-        pass
 
 
     def bus_lines_shared(self, bus_stop1, bus_stop2):
