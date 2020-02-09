@@ -1,6 +1,6 @@
 import math
 
-from Stop import BusStop
+from BusStop import BusStop
 
 
 class Graph:
