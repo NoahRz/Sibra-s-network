@@ -285,7 +285,7 @@ class Graph:
             if bus_stop_neighbour in bus_stop_to_visit:
 
                 for bus_line_name in self.bus_lines_shared(bus_stop_current, bus_stop_neighbour):  # two bus stops could
-                    # share several bus lines, but we don't care if we arrive at the neighbour bus stop the fastest way
+                    # share several bus lines, but we don't care if we arrive at the neighbour bus stop the shortest way
                     if bus_stop_neighbour in bus_stop_current.next_bus_stop:
                         date_dir_asked = date_asked + "_go"
                     else:
@@ -392,7 +392,7 @@ class Graph:
             if bus_stop_neighbour in bus_stop_to_visit:
 
                 for bus_line_name in self.bus_lines_shared(bus_stop_current, bus_stop_neighbour):  # two bus stops could
-                    # share several bus lines, but we don't care if we arrive at the neighbour bus stop the fastest way
+                    # share several bus lines, but we don't care if we arrive at the neighbour bus stop the foremost way
                     if bus_stop_neighbour in bus_stop_current.next_bus_stop:
                         date_dir_asked = date_asked + "_go"
                     else:
