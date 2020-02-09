@@ -1,16 +1,6 @@
 from Graph import Graph
 
 
-def dates2dic(dates):
-    dic = {}
-    splitted_dates = dates.split("\n")
-    # print(splitted_dates)
-    for stop_dates in splitted_dates:
-        tmp = stop_dates.split(" ")
-        dic[tmp[0]] = tmp[1:]
-    return dic
-
-
 def main():
     data_file_name1 = '1_Poisy-ParcDesGlaisins.txt'
     data_file_name2 = '2_Piscine-Patinoire_Campus.txt'
@@ -26,7 +16,6 @@ def main():
         # we enter the bus stop's number in case that the user doesn't know how to write the bus stop name
         display(graph.bus_stops)
         print("Select a number :")
-        # print("a")
         ans = input()
         if 0 <= int(ans) < size:
             print("END :")
@@ -91,14 +80,15 @@ def display(bus_stops, para=None, para1=None):
         i = i + 1
     print()  # to stop printing on the same line
 
+
 def display_path(path):
     """ display the path
     :param path: list of dict of bus stop"""
     for bus_stop_dict in path:
-        key = list(bus_stop_dict.keys())[0] # the first key of the dict
-        if path.index(bus_stop_dict) == 0:  # the fisrt bus_stop
+        key = list(bus_stop_dict.keys())[0]  # the first key of the dict
+        if path.index(bus_stop_dict) == 0:  # the first bus_stop
             print('\x1b[6;30;44m' + 'START' + '\x1b[0m')
-            print("bus_stop : "+ '\033[1;34m' + key + '\033[0m' + " ,Time :", bus_stop_dict[key]["Time"])
+            print("bus_stop : " + '\033[1;34m' + key + '\033[0m' + " ,Time :", bus_stop_dict[key]["Time"])
             print("bus line :", bus_stop_dict[key]["bus_line_name"], bus_stop_dict[key]["date_dir_asked"])
             print(".\n.\n.")
         elif path.index(bus_stop_dict) == len(path)-1:  # the last bus_stop

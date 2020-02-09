@@ -38,10 +38,11 @@ class Stop:
         """ add the previous bus stop"""
         self.prev_bus_stop.append(bus_stop)
 
-    def convert_time_in_min(self, time):
-        """ return the converted time hour:min into min
+    def convert_time_to_min(self, time):
+        """ return the converted time hour:min to min
         :param time: str
-        :return int (minunte)"""
+        :return int (minute)
+        """
         return int(time.split(":")[0]) * 60 + int(time.split(":")[1])
 
     def get_bus_stop_neighbour(self):
@@ -55,7 +56,8 @@ class Stop:
         """ return the time in bus_line_name, in date_asked at index
          :param bus_line_name : String
          :param date_asked: String, regular_go, regular_back, we_holidays_go, we_holidays_back
-         :return String"""
+         :return String
+         """
         return self.schedules[bus_line_name][date_asked][index]
 
 
@@ -65,23 +67,19 @@ class Stop:
         :param date_dir_asked: String ex "regular_go"
         :param time_asked : String
         """
-        index = 0
         nb = (len(self.schedules[bus_line_name][date_dir_asked]))
-        converted_time_asked = self.convert_time_in_min(time_asked) # convert the time_asked into minute
+        converted_time_asked = self.convert_time_to_min(time_asked) # convert the time_asked into minute
 
         for index in range(nb-1):
             # there are only 3 cases to return the right index, but for these three we return the index of the closest time
             # after (or equal) the time asked
 
-            # current_time = self.convert_time_in_min(self.schedules[bus_line_name][date_dir_asked][index])  # convert the current time into datetime object (iteration)
-            # next_time = self.convert_time_in_min(self.schedules[bus_line_name][date_dir_asked][index + 1])  # convert the next time into datetime object (iteration)
-
             if self.schedules[bus_line_name][date_dir_asked][index] != "-":
-                current_time = self.convert_time_in_min(self.schedules[bus_line_name][date_dir_asked][index])  # convert the current time into datetime object
+                current_time = self.convert_time_to_min(self.schedules[bus_line_name][date_dir_asked][index])  # convert the current time to min
             else:
                 current_time = None
             if self.schedules[bus_line_name][date_dir_asked][index + 1] != "-":
-                next_time = self.convert_time_in_min(self.schedules[bus_line_name][date_dir_asked][index + 1])  # convert the next time into datetime object
+                next_time = self.convert_time_to_min(self.schedules[bus_line_name][date_dir_asked][index + 1])  # convert the next time to min
             else:
                 next_time = None
             if self.schedules[bus_line_name][date_dir_asked][index] != "-" and self.schedules[bus_line_name][date_dir_asked][index + 1] != "-" and current_time == converted_time_asked:

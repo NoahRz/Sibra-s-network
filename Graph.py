@@ -46,7 +46,7 @@ class Graph:  # composed of bus lines
         # NB: a Bus stop can be served on regular and/or on we_holidays date
 
         # we create regular_date bus_stop
-        for bus_stop_name in regular_date_go:  # TO OPTIMISE $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        for bus_stop_name in regular_date_go:
             bus_stop_names = []  # current list of stop names
             for bus_stop1 in self.bus_stops:
                 bus_stop_names.append(bus_stop1.name)
@@ -59,7 +59,7 @@ class Graph:  # composed of bus lines
             else:  # adds the new bus line if the bus stop is already in the network
                 self.get_bus_stop(bus_stop_name).add_bus_line_regular(bus_line_name, regular_date_go, regular_date_back)
 
-        # we create we_holidays_date bus_stop # TO OPTIMISE  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # we create we_holidays_date bus_stop
         for bus_stop_name in we_holidays_date_go:  # in case that the lists of bus stop are not the same in regular and
             bus_stop_names = []
             for bus_stop1 in self.bus_stops:
@@ -73,14 +73,13 @@ class Graph:  # composed of bus lines
             else:  # adds the new bus line if the bus stop is already in the network
                 self.get_bus_stop(bus_stop_name).add_bus_line_we_holidays(bus_line_name, we_holidays_date_go,
                                                                           we_holidays_date_back)
-        # $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
         # add neighbour bus_stop for each bus_stop on regular_date (the regular and we_holidays paths might be
-        # differents)
+        # different)
         self.add_neighbour_bus_stops(regular_path)
 
         # add neighbour bus_stop for each bus_stop on we_holidays_date (the regular and we_holidays paths might be
-        # differents)
+        # different)
         self.add_neighbour_bus_stops(we_holidays_path)
 
     def get_bus_stop(self, bus_stop_name):
@@ -107,7 +106,7 @@ class Graph:  # composed of bus lines
                     if bus_stop1 not in bus_stop2.prev_bus_stop:
                         bus_stop2.add_prev_bus_stop(bus_stop1)
 
-    def convert_time_in_min(self, time):
+    def convert_time_to_min(self, time):
         """ return the converted time hour:min into min
         :param time: str
         :return int (minunte)"""
@@ -167,7 +166,6 @@ class Graph:  # composed of bus lines
         for bus_stop_neighbour in bus_stop_current.get_bus_stop_neighbour():
             if bus_stop_neighbour in bus_stop_to_visit:
 
-                #####
                 for bus_line_name in self.bus_lines_shared(bus_stop_current, bus_stop_neighbour):  # two bus stops could
                     # share several bus lines, but we don't care if we arrive at the neighbour bus stop the fastest way
                     if bus_stop_neighbour in bus_stop_current.next_bus_stop:
@@ -178,22 +176,20 @@ class Graph:  # composed of bus lines
                     index = bus_stop_current.get_index_closest_time(bus_line_name, date_dir_asked,
                                                                     time_asked)  # index is the index of the closest time (in the bus_line_name) to time asked
 
-                    # time_bus_stop_current = self.convert_time_in_min(bus_stop_current.get_time(bus_line_name, date_dir_asked, index))
                     while bus_stop_neighbour.get_time(bus_line_name, date_dir_asked,
-                                                      index) == '-':  # pour gérer la fourchette, on attend le prochain pour partir
+                                                      index) == '-':
                         index = index + 1  # even if we are in the back direction we add 1 because the schedule is reversed (kinda)
 
-                    waiting_time = self.convert_time_in_min(bus_stop_current.schedules[bus_line_name][date_dir_asked][index]) - self.convert_time_in_min(time_asked)
-                    # waiting time before taking the bus (works)
+                    waiting_time = self.convert_time_to_min(bus_stop_current.schedules[bus_line_name][date_dir_asked][index]) - self.convert_time_to_min(time_asked)
+                    # waiting time before taking the bus
                     if waiting_time < 0:  # if we wait for the first bus tomorrow
-                        waiting_time = (self.convert_time_in_min('24:00')-self.convert_time_in_min(time_asked)) + self.convert_time_in_min(bus_stop_current.schedules[bus_line_name][date_dir_asked][index])
+                        waiting_time = (self.convert_time_to_min('24:00')-self.convert_time_to_min(time_asked)) + self.convert_time_to_min(bus_stop_current.schedules[bus_line_name][date_dir_asked][index])
 
-                    time_bus_stop_neighbour = self.convert_time_in_min(bus_stop_neighbour.get_time(bus_line_name, date_dir_asked, index))
-                    time_bus_stop_current = self.convert_time_in_min(bus_stop_current.get_time(bus_line_name, date_dir_asked, index))
+                    time_bus_stop_neighbour = self.convert_time_to_min(bus_stop_neighbour.get_time(bus_line_name, date_dir_asked, index))
+                    time_bus_stop_current = self.convert_time_to_min(bus_stop_current.get_time(bus_line_name, date_dir_asked, index))
 
                     weight = (time_bus_stop_neighbour - time_bus_stop_current) + waiting_time  # time (in minute) between these 2 bus stops
 
-                    #####
                     new_dist = weight + dist[bus_stop_current.name]["time_to_get_there"]
                     if new_dist < dist[bus_stop_neighbour.name]["time_to_get_there"]:
                         dist[bus_stop_neighbour.name]["time_to_get_there"] = new_dist
@@ -211,10 +207,6 @@ class Graph:  # composed of bus lines
                 bus_stop_closest_to_start_and_not_yet_visited = bus_stop
 
         bus_stop_to_visit.remove(bus_stop_closest_to_start_and_not_yet_visited)
-
-        # ATTENTION : IL FAUT QUE LE TIME ASKED VARIE (IMPOSSIBLE DE TOUT LE TEMPS ARRIVER à LA MEME HEURE A UN ARRET SUR NOTRE CHEMIN
-        # TIME_ASKED EST L'HEURE D'ARRIVEE AU PROCHAIN ARRET(bus_stop_closest_to_start_and_not_yet_visited),
-        # pour cela je dois avoir bus_line_name, date et index
 
         bus_line_name1 = dist[bus_stop_closest_to_start_and_not_yet_visited.name]["last_bus_to_get_there"]["bus_line_name"]
         date_dir_asked1 = dist[bus_stop_closest_to_start_and_not_yet_visited.name]["last_bus_to_get_there"]["date_dir_asked"]
@@ -291,7 +283,6 @@ class Graph:  # composed of bus lines
         for bus_stop_neighbour in bus_stop_current.get_bus_stop_neighbour():
             if bus_stop_neighbour in bus_stop_to_visit:
 
-                #####
                 for bus_line_name in self.bus_lines_shared(bus_stop_current, bus_stop_neighbour):  # two bus stops could
                     # share several bus lines, but we don't care if we arrive at the neighbour bus stop the fastest way
                     if bus_stop_neighbour in bus_stop_current.next_bus_stop:
@@ -302,12 +293,10 @@ class Graph:  # composed of bus lines
                     index = bus_stop_current.get_index_closest_time(bus_line_name, date_dir_asked,
                                                                     time_asked)  # index is the index of the closest time (in the bus_line_name) to time asked
 
-                    # time_bus_stop_current = self.convert_time_in_min(bus_stop_current.get_time(bus_line_name, date_dir_asked, index))
                     while bus_stop_neighbour.get_time(bus_line_name, date_dir_asked,
-                                                      index) == '-':  # pour gérer la fourchette, on attend le prochain pour partir
+                                                      index) == '-':
                         index = index + 1  # even if we are in the back direction we add 1 because the schedule is reversed (kinda)
 
-                    #####
                     new_dist = 1 + dist[bus_stop_current.name]["step_nb"]
                     if new_dist < dist[bus_stop_neighbour.name]["step_nb"]:
                         dist[bus_stop_neighbour.name]["step_nb"] = new_dist
@@ -325,10 +314,6 @@ class Graph:  # composed of bus lines
                 bus_stop_closest_to_start_and_not_yet_visited = bus_stop
 
         bus_stop_to_visit.remove(bus_stop_closest_to_start_and_not_yet_visited)
-
-        # ATTENTION : IL FAUT QUE LE TIME ASKED VARIE (IMPOSSIBLE DE TOUT LE TEMPS ARRIVER à LA MEME HEURE A UN ARRET SUR NOTRE CHEMIN
-        # TIME_ASKED EST L'HEURE D'ARRIVEE AU PROCHAIN ARRET(bus_stop_closest_to_start_and_not_yet_visited),
-        # pour cela je dois avoir bus_line_name, date et index
 
         bus_line_name1 = dist[bus_stop_closest_to_start_and_not_yet_visited.name]["last_bus_to_get_there"]["bus_line_name"]
         date_dir_asked1 = dist[bus_stop_closest_to_start_and_not_yet_visited.name]["last_bus_to_get_there"]["date_dir_asked"]
@@ -405,7 +390,6 @@ class Graph:  # composed of bus lines
         for bus_stop_neighbour in bus_stop_current.get_bus_stop_neighbour():
             if bus_stop_neighbour in bus_stop_to_visit:
 
-                #####
                 for bus_line_name in self.bus_lines_shared(bus_stop_current, bus_stop_neighbour):  # two bus stops could
                     # share several bus lines, but we don't care if we arrive at the neighbour bus stop the fastest way
                     if bus_stop_neighbour in bus_stop_current.next_bus_stop:
@@ -416,22 +400,18 @@ class Graph:  # composed of bus lines
                     index = bus_stop_current.get_index_closest_time(bus_line_name, date_dir_asked,
                                                                     time_asked)  # index is the index of the closest time (in the bus_line_name) to time asked
 
-                    # time_bus_stop_current = self.convert_time_in_min(bus_stop_current.get_time(bus_line_name, date_dir_asked, index))
                     while bus_stop_neighbour.get_time(bus_line_name, date_dir_asked,
-                                                      index) == '-':  # pour gérer la fourchette, on attend le prochain pour partir
+                                                      index) == '-':
                         index = index + 1  # even if we are in the back direction we add 1 because the schedule is reversed (kinda)
 
-                    waiting_time = self.convert_time_in_min(bus_stop_current.schedules[bus_line_name][date_dir_asked][index]) - self.convert_time_in_min(time_asked)
+                    waiting_time = self.convert_time_to_min(bus_stop_current.schedules[bus_line_name][date_dir_asked][index]) - self.convert_time_to_min(time_asked)
                     # waiting time before taking the bus (works)
-                    time_arrived_at_bus_stop_neighbour = self.convert_time_in_min(bus_stop_neighbour.get_time(bus_line_name, date_dir_asked, index))
+                    time_arrived_at_bus_stop_neighbour = self.convert_time_to_min(bus_stop_neighbour.get_time(bus_line_name, date_dir_asked, index))
                     if waiting_time < 0:  # if we wait for the first bus tomorrow
                         time_arrived_at_bus_stop_neighbour = time_arrived_at_bus_stop_neighbour + (60*24)
                         # we add one day, don't really matter the additional value (it might be different than the real
                         # waiting time) but it has to be enough greater to recognize that we wait for the next day
 
-                    #time_bus_stop_current = self.convert_time_in_min(bus_stop_current.get_time(bus_line_name, date_dir_asked, index))
-
-                    #####
                     if time_arrived_at_bus_stop_neighbour < dist[bus_stop_neighbour.name]["time_arrived"]:
                         dist[bus_stop_neighbour.name]["time_arrived"] = time_arrived_at_bus_stop_neighbour
                         dist[bus_stop_neighbour.name]["last_bus_to_get_there"]["last_bus_stop"] = bus_stop_current
@@ -449,10 +429,6 @@ class Graph:  # composed of bus lines
 
         bus_stop_to_visit.remove(bus_stop_closest_to_start_and_not_yet_visited)
 
-        # ATTENTION : IL FAUT QUE LE TIME ASKED VARIE (IMPOSSIBLE DE TOUT LE TEMPS ARRIVER à LA MEME HEURE A UN ARRET SUR NOTRE CHEMIN
-        # TIME_ASKED EST L'HEURE D'ARRIVEE AU PROCHAIN ARRET(bus_stop_closest_to_start_and_not_yet_visited),
-        # pour cela je dois avoir bus_line_name, date et index
-
         bus_line_name1 = dist[bus_stop_closest_to_start_and_not_yet_visited.name]["last_bus_to_get_there"]["bus_line_name"]
         date_dir_asked1 = dist[bus_stop_closest_to_start_and_not_yet_visited.name]["last_bus_to_get_there"]["date_dir_asked"]
         index1 = dist[bus_stop_closest_to_start_and_not_yet_visited.name]["last_bus_to_get_there"]["index"]
@@ -461,10 +437,8 @@ class Graph:  # composed of bus lines
         #track the path to get to the bus_stop_closest_to_start_and_not_yet_visited
         last_bus_stop1 = dist[bus_stop_closest_to_start_and_not_yet_visited.name]["last_bus_to_get_there"]["last_bus_stop"]
 
-
         time = last_bus_stop1.schedules[bus_line_name1][date_dir_asked1][index1]
         #time is the time when the bus is at the bus_stop
-
 
         paths[bus_stop_closest_to_start_and_not_yet_visited.name].extend(paths[last_bus_stop1.name]) # we add the path to get to the last bus_stop
         if paths[bus_stop_closest_to_start_and_not_yet_visited.name] == []: # In case that the path is empty, we add the first bus_stop from where we leave
