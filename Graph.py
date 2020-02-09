@@ -35,10 +35,10 @@ class Graph:
             print("File not found")
 
         slited_content = content.split("\n\n")
-        regular_path = slited_content[0]  # useless
+        regular_path = slited_content[0]
         regular_date_go = self.dates2dic(slited_content[1])
         regular_date_back = self.dates2dic(slited_content[2])
-        we_holidays_path = slited_content[3]  # useless
+        we_holidays_path = slited_content[3]
         we_holidays_date_go = self.dates2dic(slited_content[4])
         we_holidays_date_back = self.dates2dic(slited_content[5])
 
