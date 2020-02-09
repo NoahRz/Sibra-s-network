@@ -107,23 +107,6 @@ class Graph:  # composed of bus lines
                     if bus_stop1 not in bus_stop2.prev_bus_stop:
                         bus_stop2.add_prev_bus_stop(bus_stop1)
 
-
-    def find_path_new(self, bus_stop_star, bus_stop_end, path=[]): # SKETCH
-
-        bus_stop_current = bus_stop_star
-        path.append(bus_stop_current)
-        while bus_stop_current != bus_stop_end:
-            if bus_stop_current.has_next_bus_stop():  # do not know if it's useful
-                for bus_stop_neighbour in bus_stop_current.next_bus_stop:
-                    if not (bus_stop_neighbour in path):
-                        return self.find_path_new(bus_stop_neighbour, bus_stop_end, path)
-            if bus_stop_current.has_prev_bus_stop():  # do not know if it's useful
-                for bus_stop_neighbour in bus_stop_current.prev_bus_stop:
-                    # if not (bus_stop_neighbour in path):
-                    return self.find_path_new(bus_stop_neighbour, bus_stop_end, path)
-            return path
-        return path
-
     def convert_time_in_min(self, time):
         """ return the converted time hour:min into min
         :param time: str

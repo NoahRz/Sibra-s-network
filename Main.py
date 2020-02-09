@@ -19,19 +19,6 @@ def main():
     graph.add_bus_line(data_file_name1)
     graph.add_bus_line(data_file_name2)
 
-    # for bus_stop in graph.bus_stops: # display test
-    #     l = ["prev:"]
-    #     for b in bus_stop.prev_bus_stop:
-    #         l.append(b.name)
-    #     l.append("next:")
-    #     for b in bus_stop.next_bus_stop:
-    #         l.append(b.name)
-    #     print(bus_stop.name, l)
-
-    # for stop in graph.bus_stops: # display test
-    #     print(stop.name, stop.schedules)
-    # print(len(graph.bus_stops))
-
     run = True
     size = len(graph.bus_stops)
     while run:
@@ -60,7 +47,6 @@ def main():
                     date_asked = "regular"
                 else:
                     date_asked = "we_holidays"
-                # path = graph.find_path_new(bus_stop_start, bus_stop_end)
                 print("Please choose one of these : 1 Fastest path - 2 Shortest path - 3 Foremost path")
                 ans3 = input()
                 if int(ans3) == 1:
@@ -77,12 +63,6 @@ def main():
                     display_path(path)
                 else:
                     print('\x1b[0;30;41m' + 'Choose one of these 3' + '\x1b[0m')
-                # path_names = []
-                # # path = graph.find_path(bus_stop_start, bus_stop_end, time_asked, date_asked)
-                # for bus_stop in path:
-                #     path_names.append(bus_stop.name)
-                # print(path_names)
-                # #print(path)
                 run = False
             else:
                 print('\x1b[0;30;41m' + 'this bus stop does not exist or it is same as the start one !' + '\x1b[0m')
