@@ -1,12 +1,12 @@
 import math
 
-from Stop import Stop
+from Stop import BusStop
 
 
-class Graph:  # composed of bus lines
+class Graph:
 
     def __init__(self):
-        self.bus_stops = []
+        self.bus_stops = []  # list of BusStop
 
     def dates2dic(self, dates):
         dic = {}
@@ -52,7 +52,7 @@ class Graph:  # composed of bus lines
 
             if not (bus_stop_name in bus_stop_names):  # creates the new bus stop and adds the schedule of the bus
                 # line to the stop
-                st = Stop(bus_stop_name)
+                st = BusStop(bus_stop_name)
                 st.add_bus_line_regular(bus_line_name, regular_date_go, regular_date_back)
                 self.bus_stops.append(st)
             else:  # adds the new bus line if the bus stop is already in the network
@@ -66,7 +66,7 @@ class Graph:  # composed of bus lines
 
             if not (bus_stop_name in bus_stop_names):  # creates the new bus stop and adds the schedule of the bus
                 # line to the stop
-                st = Stop(bus_stop_name)
+                st = BusStop(bus_stop_name)
                 st.add_bus_line_we_holidays(bus_line_name, we_holidays_date_go, we_holidays_date_back)
                 self.bus_stops.append(st)
             else:  # adds the new bus line if the bus stop is already in the network
