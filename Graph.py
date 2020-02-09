@@ -161,7 +161,7 @@ class Graph:  # composed of bus lines
         dist[bus_stop_start.name]["last_bus_to_get_there"] = {"last_bus_stop" : None, "bus_line": None, "date_dir_asked": None, "index": None}
         bus_stop_to_visit.remove(bus_stop_start)  # remove the bus_stop_start from bus to visit because we are already at this bus_stop
         return self.dijkstra_algorithm2(bus_stops, bus_stop_start, bus_stop_end, bus_stop_start, time_asked, date_asked,
-                                       bus_stop_to_visit, dist, paths)[bus_stop_end.name]
+                                       bus_stop_to_visit, dist, paths)
 
     def dijkstra_algorithm2(self, bus_stops, bus_stop_start, bus_stop_end, bus_stop_current, time_asked, date_asked, bus_stop_to_visit, dist, paths):
         """
@@ -177,8 +177,9 @@ class Graph:  # composed of bus lines
         :param paths: dict of bus_stop giving for each bust_stop the path to get to the bus_stop from the bus_stop_start
         :return: list of bus_stop served to get to all the bus_stop of the network
         """
-        if len(bus_stop_to_visit) == 0: # we visited all the bus_stops of the network
-            return paths
+
+        if bus_stop_current == bus_stop_end: # we reach our goal by taking the fastest path
+            return paths[bus_stop_end.name]
 
         for bus_stop_neighbour in bus_stop_current.get_bus_stop_neighbour():
             if bus_stop_neighbour in bus_stop_to_visit:
@@ -285,7 +286,7 @@ class Graph:  # composed of bus lines
         dist[bus_stop_start.name]["last_bus_to_get_there"] = {"last_bus_stop" : None, "bus_line": None, "date_dir_asked": None, "index": None}
         bus_stop_to_visit.remove(bus_stop_start)  # remove the bus_stop_start from bus to visit because we are already at this bus_stop
         return self.dijkstra_algorithm3(bus_stops, bus_stop_start, bus_stop_end, bus_stop_start, time_asked, date_asked,
-                                       bus_stop_to_visit, dist, paths)[bus_stop_end.name]
+                                       bus_stop_to_visit, dist, paths)
 
     def dijkstra_algorithm3(self, bus_stops, bus_stop_start, bus_stop_end, bus_stop_current, time_asked, date_asked, bus_stop_to_visit, dist, paths):
         """
@@ -301,8 +302,8 @@ class Graph:  # composed of bus lines
         :param paths: dict of bus_stop giving for each bust_stop the path to get to the bus_stop from the bus_stop_start
         :return: list of bus_stop served to get to all the bus_stop of the network
         """
-        if len(bus_stop_to_visit) == 0: # we visited all the bus_stops of the network
-            return paths
+        if bus_stop_current == bus_stop_end: #  we reach our goal by taking the shortest path
+            return paths[bus_stop_end.name]
 
         for bus_stop_neighbour in bus_stop_current.get_bus_stop_neighbour():
             if bus_stop_neighbour in bus_stop_to_visit:
@@ -399,7 +400,7 @@ class Graph:  # composed of bus lines
         dist[bus_stop_start.name]["last_bus_to_get_there"] = {"last_bus_stop" : None, "bus_line": None, "date_dir_asked": None, "index": None}
         bus_stop_to_visit.remove(bus_stop_start)  # remove the bus_stop_start from bus to visit because we are already at this bus_stop
         return self.dijkstra_algorithm4(bus_stops, bus_stop_start, bus_stop_end, bus_stop_start, time_asked, date_asked,
-                                       bus_stop_to_visit, dist, paths)[bus_stop_end.name]
+                                       bus_stop_to_visit, dist, paths)
 
     def dijkstra_algorithm4(self, bus_stops, bus_stop_start, bus_stop_end, bus_stop_current, time_asked, date_asked, bus_stop_to_visit, dist, paths):
         """
@@ -415,8 +416,8 @@ class Graph:  # composed of bus lines
         :param paths: dict of bus_stop giving for each bust_stop the path to get to the bus_stop from the bus_stop_start
         :return: list of bus_stop served to get to all the bus_stop of the network
         """
-        if len(bus_stop_to_visit) == 0: # we visited all the bus_stops of the network
-            return paths
+        if bus_stop_current == bus_stop_end: #  we reach our goal by taking the foremost path
+            return paths[bus_stop_end.name]
 
         for bus_stop_neighbour in bus_stop_current.get_bus_stop_neighbour():
             if bus_stop_neighbour in bus_stop_to_visit:
